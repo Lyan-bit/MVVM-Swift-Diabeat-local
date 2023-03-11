@@ -57,18 +57,18 @@ deinit
 
 }
 
-  var DiabeatsAllInstances : [Diabeats] = [Diabeats]()
+  var diabeatsAllInstances : [Diabeats] = [Diabeats]()
 
   func createDiabeats() -> Diabeats
 	{ let result : Diabeats = Diabeats()
-	  DiabeatsAllInstances.append(result)
+        diabeatsAllInstances.append(result)
 	  return result }
   
   func addDiabeats(instance : Diabeats)
-	{ DiabeatsAllInstances.append(instance) }
+	{ diabeatsAllInstances.append(instance) }
 
   func killDiabeats(obj: Diabeats)
-	{ DiabeatsAllInstances = DiabeatsAllInstances.filter{ $0 !== obj } }
+	{ diabeatsAllInstances = diabeatsAllInstances.filter{ $0 !== obj } }
 
   func createByPKDiabeats(key : String) -> Diabeats
 	{ var result : Diabeats? = Diabeats.getByPKDiabeats(index: key)
@@ -76,14 +76,14 @@ deinit
 	  	return result!
 	  }
 	  result = Diabeats()
-	  DiabeatsAllInstances.append(result!)
+        diabeatsAllInstances.append(result!)
 	  Diabeats.diabeatsIndex[key] = result!
 	  result!.id = key
 	  return result! }
 
   func killDiabeats(key : String)
 	{ Diabeats.diabeatsIndex[key] = nil
-	  DiabeatsAllInstances.removeAll(where: { $0.id == key })
+        diabeatsAllInstances.removeAll(where: { $0.id == key })
 	}
 	
 	extension Diabeats : Hashable, Identifiable

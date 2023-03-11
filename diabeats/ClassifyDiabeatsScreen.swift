@@ -3,7 +3,8 @@ import SwiftUI
 
 struct ClassifyDiabeatsScreen: View {
     @State var objectId: String = ""
-    @ObservedObject var model : ModelFacade
+    @ObservedObject var model : CRUDViewModel
+    @ObservedObject var classification : ClassificationViewModel
     
     @State var result = ""
 
@@ -25,8 +26,8 @@ struct ClassifyDiabeatsScreen: View {
              }.frame(width: 200, height: 60).border(Color.gray)
              
              HStack (spacing: 20) {
-                Button(action: { result = self.model.classifyDiabeats(x: objectId) } ) { Text("Classify") }
-				Button(action: {self.model.cancelClassifyDiabeats() } ) { Text("Cancel") }
+                Button(action: { result = self.classification.classifyDiabeats(x: objectId) } ) { Text("Classify") }
+				Button(action: {self.classification.cancelClassifyDiabeats() } ) { Text("Cancel") }
 		     }.buttonStyle(.bordered)
         }.onAppear(perform:
         	{ objectId = model.currentDiabeats?.id ?? "id" 
@@ -39,7 +40,7 @@ struct ClassifyDiabeatsScreen: View {
 
 struct ClassifyDiabeatsScreen_Previews: PreviewProvider {
     static var previews: some View {
-        ClassifyDiabeatsScreen(model: ModelFacade.getInstance())
+        ClassifyDiabeatsScreen(model: CRUDViewModel.getInstance(), classification: ClassificationViewModel.getInstance())
     }
 }
 

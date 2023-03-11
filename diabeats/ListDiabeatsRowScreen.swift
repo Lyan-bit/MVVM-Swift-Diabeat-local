@@ -4,7 +4,7 @@ import SwiftUI
 struct ListDiabeatsRowScreen: View {
     
     var instance : DiabeatsVO
-    @ObservedObject var model : ModelFacade = ModelFacade.getInstance()
+    @ObservedObject var model : CRUDViewModel = CRUDViewModel.getInstance()
 
       var body: some View { 
       	ScrollView {
@@ -32,7 +32,7 @@ struct ListDiabeatsRowScreen: View {
 
     struct ListDiabeatsRowScreen_Previews: PreviewProvider {
       static var previews: some View {
-        ListDiabeatsRowScreen(instance: DiabeatsVO(x: DiabeatsAllInstances[0]))
+        ListDiabeatsRowScreen(instance: DiabeatsVO(x: diabeatsAllInstances[0]))
       }
     }
 

@@ -4,7 +4,7 @@ import SwiftUI
 struct CreateDiabeatsScreen: View {
  
   @State var bean : DiabeatsVO = DiabeatsVO()
-  @ObservedObject var model : ModelFacade
+  @ObservedObject var model : CRUDViewModel
 
   var body: some View {
   	NavigationView {
@@ -80,7 +80,7 @@ struct CreateDiabeatsScreen: View {
 
 struct CreateDiabeatsScreen_Previews: PreviewProvider {
     static var previews: some View {
-        CreateDiabeatsScreen(model: ModelFacade.getInstance())
+        CreateDiabeatsScreen(model: CRUDViewModel.getInstance())
     }
 }
 

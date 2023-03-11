@@ -7,7 +7,7 @@ struct diabeatsMain : App {
 
 	var body: some Scene {
 	        WindowGroup {
-	            ContentView(model: ModelFacade.getInstance())
+                ContentView(model: CRUDViewModel.getInstance(), classification: ClassificationViewModel.getInstance())
 	        }
 	    }
 	} 

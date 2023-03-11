@@ -6,9 +6,9 @@ import SwiftUI
 
 func initialiseOclFile()
 { 
-  //let systemIn = createByPKOclFile(key: "System.in")
-  //let systemOut = createByPKOclFile(key: "System.out")
-  //let systemErr = createByPKOclFile(key: "System.err")
+  createByPKOclFile(key: "System.in")
+  createByPKOclFile(key: "System.out")
+  createByPKOclFile(key: "System.err")
 }
 
 /* This metatype code requires OclType.swift */
@@ -87,19 +87,18 @@ func instanceFromJSON(typeName: String, json: String) -> AnyObject?
   return nil
 	}
 
-class ModelFacade : ObservableObject {
+class CRUDViewModel : ObservableObject {
 		                      
-	static var instance : ModelFacade? = nil
-	private var modelParser : ModelParser? = ModelParser(modelFileInfo: ModelFile.modelInfo)
+	static var instance : CRUDViewModel? = nil
 	var db : DB?
 		
 	// path of document directory for SQLite database (absolute path of db)
 	let dbpath: String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first ?? ""
 	var fileSystem : FileAccessor = FileAccessor()
 
-	static func getInstance() -> ModelFacade { 
+	static func getInstance() -> CRUDViewModel {
 		if instance == nil
-	     { instance = ModelFacade() 
+	     { instance = CRUDViewModel()
 	       initialiseOclFile()
 	       initialiseOclType() }
 	    return instance! }
@@ -135,36 +134,6 @@ class ModelFacade : ObservableObject {
 		//cancel function
 	}
 
-    func classifyDiabeats(x : String) -> String {
-        guard let diabeats = getDiabeatsByPK(val: x)
-        else {
-            return "Please selsect valid id"
-        }
-        
-        guard let result = self.modelParser?.runModel(
-          input0: Float((diabeats.pregnancies - 0) / (17 - 0)),
-          input1: Float((diabeats.glucose - 0) / (199 - 0)),
-          input2: Float((diabeats.bloodPressure - 0) / (122 - 0)),
-          input3: Float((diabeats.skinThickness - 0) / (99 - 0)),
-          input4: Float((diabeats.insulin - 0) / (846 - 0)),
-          input5: Float((diabeats.bmi - 0) / (67.1 - 0)),
-          input6: Float((diabeats.diabetesPedigreeFunction - 0.78) / (2.42 - 0.78)),
-          input7: Float((diabeats.age - 21) / (81 - 21))
-        ) else{
-            return "Error"
-        }
-        
-        diabeats.outcome = result
-        persistDiabeats(x: diabeats)
-        
-        return result
-	}
-	
-	func cancelClassifyDiabeats() {
-		//cancel function
-	}
-	    
-
 	func loadDiabeats() {
 		let res : [DiabeatsVO] = listDiabeats()
 		
@@ -191,7 +160,7 @@ class ModelFacade : ObservableObject {
 			  return currentDiabeatss
 			}
 			currentDiabeatss = [DiabeatsVO]()
-			let list : [Diabeats] = DiabeatsAllInstances
+			let list : [Diabeats] = diabeatsAllInstances
 			for (_,x) in list.enumerated()
 			{ currentDiabeatss.append(DiabeatsVO(x: x)) }
 			return currentDiabeatss
@@ -267,156 +236,4 @@ class ModelFacade : ObservableObject {
 	    func cancelDiabeatsEdit() {
 	    	//cancel function
 	    }
-	    
- 	func searchByDiabeatsid(val : String) -> [DiabeatsVO]
-		  { 
-		      if db != nil
-		        { let res = (db?.searchByDiabeatsid(val: val))!
-		          return res
-		        }
-		    currentDiabeatss = [DiabeatsVO]()
-		    let list : [Diabeats] = DiabeatsAllInstances
-		    for (_,x) in list.enumerated()
-		    { if x.id == val
-		      { currentDiabeatss.append(DiabeatsVO(x: x)) }
-		    }
-		    return currentDiabeatss
-		  }
-		  
- 	func searchByDiabeatspregnancies(val : Int) -> [DiabeatsVO]
-		  { 
-		      if db != nil
-		        { let res = (db?.searchByDiabeatspregnancies(val: val))!
-		          return res
-		        }
-		    currentDiabeatss = [DiabeatsVO]()
-		    let list : [Diabeats] = DiabeatsAllInstances
-		    for (_,x) in list.enumerated()
-		    { if x.pregnancies == val
-		      { currentDiabeatss.append(DiabeatsVO(x: x)) }
-		    }
-		    return currentDiabeatss
-		  }
-		  
- 	func searchByDiabeatsglucose(val : Int) -> [DiabeatsVO]
-		  { 
-		      if db != nil
-		        { let res = (db?.searchByDiabeatsglucose(val: val))!
-		          return res
-		        }
-		    currentDiabeatss = [DiabeatsVO]()
-		    let list : [Diabeats] = DiabeatsAllInstances
-		    for (_,x) in list.enumerated()
-		    { if x.glucose == val
-		      { currentDiabeatss.append(DiabeatsVO(x: x)) }
-		    }
-		    return currentDiabeatss
-		  }
-		  
- 	func searchByDiabeatsbloodPressure(val : Int) -> [DiabeatsVO]
-		  { 
-		      if db != nil
-		        { let res = (db?.searchByDiabeatsbloodPressure(val: val))!
-		          return res
-		        }
-		    currentDiabeatss = [DiabeatsVO]()
-		    let list : [Diabeats] = DiabeatsAllInstances
-		    for (_,x) in list.enumerated()
-		    { if x.bloodPressure == val
-		      { currentDiabeatss.append(DiabeatsVO(x: x)) }
-		    }
-		    return currentDiabeatss
-		  }
-		  
- 	func searchByDiabeatsskinThickness(val : Int) -> [DiabeatsVO]
-		  { 
-		      if db != nil
-		        { let res = (db?.searchByDiabeatsskinThickness(val: val))!
-		          return res
-		        }
-		    currentDiabeatss = [DiabeatsVO]()
-		    let list : [Diabeats] = DiabeatsAllInstances
-		    for (_,x) in list.enumerated()
-		    { if x.skinThickness == val
-		      { currentDiabeatss.append(DiabeatsVO(x: x)) }
-		    }
-		    return currentDiabeatss
-		  }
-		  
- 	func searchByDiabeatsinsulin(val : Int) -> [DiabeatsVO]
-		  { 
-		      if db != nil
-		        { let res = (db?.searchByDiabeatsinsulin(val: val))!
-		          return res
-		        }
-		    currentDiabeatss = [DiabeatsVO]()
-		    let list : [Diabeats] = DiabeatsAllInstances
-		    for (_,x) in list.enumerated()
-		    { if x.insulin == val
-		      { currentDiabeatss.append(DiabeatsVO(x: x)) }
-		    }
-		    return currentDiabeatss
-		  }
-		  
- 	func searchByDiabeatsbmi(val : Double) -> [DiabeatsVO]
-		  { 
-		      if db != nil
-		        { let res = (db?.searchByDiabeatsbmi(val: val))!
-		          return res
-		        }
-		    currentDiabeatss = [DiabeatsVO]()
-		    let list : [Diabeats] = DiabeatsAllInstances
-		    for (_,x) in list.enumerated()
-		    { if x.bmi == val
-		      { currentDiabeatss.append(DiabeatsVO(x: x)) }
-		    }
-		    return currentDiabeatss
-		  }
-		  
- 	func searchByDiabeatsdiabetesPedigreeFunction(val : Double) -> [DiabeatsVO]
-		  { 
-		      if db != nil
-		        { let res = (db?.searchByDiabeatsdiabetesPedigreeFunction(val: val))!
-		          return res
-		        }
-		    currentDiabeatss = [DiabeatsVO]()
-		    let list : [Diabeats] = DiabeatsAllInstances
-		    for (_,x) in list.enumerated()
-		    { if x.diabetesPedigreeFunction == val
-		      { currentDiabeatss.append(DiabeatsVO(x: x)) }
-		    }
-		    return currentDiabeatss
-		  }
-		  
- 	func searchByDiabeatsage(val : Int) -> [DiabeatsVO]
-		  { 
-		      if db != nil
-		        { let res = (db?.searchByDiabeatsage(val: val))!
-		          return res
-		        }
-		    currentDiabeatss = [DiabeatsVO]()
-		    let list : [Diabeats] = DiabeatsAllInstances
-		    for (_,x) in list.enumerated()
-		    { if x.age == val
-		      { currentDiabeatss.append(DiabeatsVO(x: x)) }
-		    }
-		    return currentDiabeatss
-		  }
-		  
- 	func searchByDiabeatsoutcome(val : String) -> [DiabeatsVO]
-		  { 
-		      if db != nil
-		        { let res = (db?.searchByDiabeatsoutcome(val: val))!
-		          return res
-		        }
-		    currentDiabeatss = [DiabeatsVO]()
-		    let list : [Diabeats] = DiabeatsAllInstances
-		    for (_,x) in list.enumerated()
-		    { if x.outcome == val
-		      { currentDiabeatss.append(DiabeatsVO(x: x)) }
-		    }
-		    return currentDiabeatss
-		  }
-		  
-
 	}

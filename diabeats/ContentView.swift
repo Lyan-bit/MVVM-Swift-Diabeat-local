@@ -5,7 +5,8 @@ import SwiftUI
 
 struct ContentView : View {
 	
-	@ObservedObject var model : ModelFacade
+	@ObservedObject var model : CRUDViewModel
+    @ObservedObject var classification : ClassificationViewModel
 	                                       
 	var body: some View {
 		TabView {
@@ -15,7 +16,7 @@ struct ContentView : View {
             ListDiabeatsScreen (model: model).tabItem { 
                         Image(systemName: "2.square.fill")
 	                    Text("ListDiabeats")} 
-            ClassifyDiabeatsScreen (model: model).tabItem { 
+            ClassifyDiabeatsScreen (model: model, classification: classification).tabItem {
                         Image(systemName: "3.square.fill")
 	                    Text("ClassifyDiabeats")} 
 				}.font(.headline)
@@ -24,7 +25,7 @@ struct ContentView : View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(model: ModelFacade.getInstance())
+        ContentView(model: CRUDViewModel.getInstance(), classification: ClassificationViewModel.getInstance())
     }
 }
 

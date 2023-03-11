@@ -2,7 +2,7 @@
 import SwiftUI
 
 struct ListDiabeatsScreen: View {
-    @ObservedObject var model : ModelFacade = ModelFacade.getInstance()
+    @ObservedObject var model : CRUDViewModel = CRUDViewModel.getInstance()
 
      var body: some View
      { List(model.currentDiabeatss){ instance in 
@@ -14,7 +14,7 @@ struct ListDiabeatsScreen: View {
 
 struct ListDiabeatsScreen_Previews: PreviewProvider {
     static var previews: some View {
-        ListDiabeatsScreen(model: ModelFacade.getInstance())
+        ListDiabeatsScreen(model: CRUDViewModel.getInstance())
     }
 }
 

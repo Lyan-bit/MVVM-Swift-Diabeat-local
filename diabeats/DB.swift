@@ -356,10 +356,6 @@ class DB {
         sqlite3_finalize(queryStatement)
         return res
     }
-    
-    func putData( ) {
-        
-    }
 
 }
 

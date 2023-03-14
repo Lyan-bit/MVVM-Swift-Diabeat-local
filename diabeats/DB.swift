@@ -125,65 +125,9 @@ class DB {
   }
 
   func listDiabeats() -> [DiabeatsVO]
-  { var res : [DiabeatsVO] = [DiabeatsVO]()
+  {
     let statement = "SELECT * FROM Diabeats "
-    let queryStatement = try? prepareStatement(sql: statement)
-    if queryStatement == nil { 
-    	return res
-    }
-    
-    while (sqlite3_step(queryStatement) == SQLITE_ROW)
-    { //let id = sqlite3_column_int(queryStatement, 0)
-        
-        
-      let diabeatsvo = DiabeatsVO()
-      
-    guard let queryResultDiabeatsCOLID = sqlite3_column_text(queryStatement, 1) 
-    else { return res } 
-    let id = String(cString: queryResultDiabeatsCOLID) 
-    diabeatsvo.setId(x: id) 
-
-    let queryResultDiabeatsCOLPREGNANCIES = sqlite3_column_int(queryStatement, 2) 
-    let pregnancies = Int(queryResultDiabeatsCOLPREGNANCIES) 
-    diabeatsvo.setPregnancies(x: pregnancies) 
-
-    let queryResultDiabeatsCOLGLUCOSE = sqlite3_column_int(queryStatement, 3) 
-    let glucose = Int(queryResultDiabeatsCOLGLUCOSE) 
-    diabeatsvo.setGlucose(x: glucose) 
-
-    let queryResultDiabeatsCOLBLOODPRESSURE = sqlite3_column_int(queryStatement, 4) 
-    let bloodPressure = Int(queryResultDiabeatsCOLBLOODPRESSURE) 
-    diabeatsvo.setBloodPressure(x: bloodPressure) 
-
-    let queryResultDiabeatsCOLSKINTHICKNESS = sqlite3_column_int(queryStatement, 5) 
-    let skinThickness = Int(queryResultDiabeatsCOLSKINTHICKNESS) 
-    diabeatsvo.setSkinThickness(x: skinThickness) 
-
-    let queryResultDiabeatsCOLINSULIN = sqlite3_column_int(queryStatement, 6) 
-    let insulin = Int(queryResultDiabeatsCOLINSULIN) 
-    diabeatsvo.setInsulin(x: insulin) 
-
-    let queryResultDiabeatsCOLBMI = sqlite3_column_double(queryStatement, 7) 
-    let bmi = Double(queryResultDiabeatsCOLBMI) 
-    diabeatsvo.setBmi(x: bmi) 
-
-    let queryResultDiabeatsCOLDIABETESPEDIGREEFUNCTION = sqlite3_column_double(queryStatement, 8) 
-    let diabetesPedigreeFunction = Double(queryResultDiabeatsCOLDIABETESPEDIGREEFUNCTION) 
-    diabeatsvo.setDiabetesPedigreeFunction(x: diabetesPedigreeFunction) 
-
-    let queryResultDiabeatsCOLAGE = sqlite3_column_int(queryStatement, 9) 
-    let age = Int(queryResultDiabeatsCOLAGE) 
-    diabeatsvo.setAge(x: age) 
-
-    guard let queryResultDiabeatsCOLOUTCOME = sqlite3_column_text(queryStatement, 10) 
-    else { return res } 
-    let outcome = String(cString: queryResultDiabeatsCOLOUTCOME) 
-    diabeatsvo.setOutcome(x: outcome) 
-
-      res.append(diabeatsvo)
-    }
-    sqlite3_finalize(queryStatement)
-    return res
+    return setData(statement: statement)
   }
 
   func createDiabeats(diabeatsvo : DiabeatsVO) throws
@@ -356,6 +300,7 @@ class DB {
         sqlite3_finalize(queryStatement)
         return res
     }
+    
 
 }
 
